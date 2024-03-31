@@ -1,0 +1,5 @@
+brown: #624a2e;
+yellow: #efa537;
+white: #F4F4F4
+grey: #3e3c47
+blue: #84beaa
