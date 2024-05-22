@@ -60,15 +60,10 @@ Again, very much in progress & updated semi-frequently as I learn, but intend to
 
 window.onload=function(){
 
-	var x = document.getElementById("svg_map");
-	console.log(x);
-	var y=x.getSVGDocument();
-	console.log(y);
-	var z=y.getElementsByClassName("in");
-	console.log(z);
+	var myMap = document.getElementById("svg_map").getSVGDocument();
+	var z = myMap.getElementsByClassName("fr");
 
 	for (const region of z){
-		alert ("hi");
 		console.log(region);
 		region.setAttribute('style', 'fill: pink');
 		
