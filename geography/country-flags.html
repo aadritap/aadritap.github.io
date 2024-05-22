@@ -65,11 +65,9 @@ window.onload=function(){
 	var y=x.getSVGDocument();
 	console.log(y);
 	var z=y.getElementsByClassName("in");
-	alert("3");
-	console.log(z)
+	console.log(z);
 
-
-	for (var region in z){
+	for (const region of z){
 		alert ("hi");
 		console.log(region);
 		region.setAttribute('style', 'fill: pink');
