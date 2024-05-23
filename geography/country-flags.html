@@ -1,40 +1,48 @@
 <html>
 
 	<head> 
-		<title> Remembering Country Flags </title>
+		<title> Country Flags </title>
 
 		<style> 
 			* { 
-				font-size: 1em;
+				font-size: 50px;
 			}
+
+			a:link, a:visited{
+				color:white;
+			}
+
+			a:hover{
+				color:#ea3;
+			}
+
 }		</style>
 
 	</head>
 
-	<body>
+	<body style="background-color:#642; padding:40px; color:white; font-family:Courier; font-variant: small-caps;">
 
-		<h1> Remembering Country Flags </h1>
+	
+		<a href="../index.html"> Back to Main Page </a> 
 
-		A collection of memory tips I liked, interesting flag meanings, some historical background and pointing out common themes and elements. <br> 
-		Again, very much in progress & updated semi-frequently as I learn, but intend to cover every country flag eventually. no maps or images yet.
+		<h1 style = "text-align: center; font-size:90px"> Country Flags </h1>
 
-		<p> View country flag information by: </p>
-		<input type = "radio" name = "ch" value= "group" checked> <label for = "group"> Group </label>
-		<input type = "radio" name = "ch" value= "country"> <label for = "country"> Country </label>
-		<input type = "radio" name = "ch" value= "continent"> <label for = "continent"> Continent </label>
-		<input type = "radio" name = "ch" value= "all"> <labelfor = "all"> All </label>
+		Select By
+		<input type = "radio" name = "ch" value= "group" style="height:35px; width:35px; vertical-align: middle;" checked> <label for = "group"> Common Elements </label>
+		<input type = "radio" name = "ch" value= "continent" style="height:35px; width:35px; vertical-align: middle;"> <label for = "continent"> Continents </label>
+		<input type = "radio" name = "ch" value= "country" style="height:35px; width:35px; vertical-align: middle;"> <label for = "country"> Countries </label>
 
-		<div style="text-align: center;"> <embed type="image/svg+xml" src="world-map.svg" id="svg map"> </div>
-
-		<div style="text-align: right;"> Credits: Map modified from <a href = "https://en.wikipedia.org/wiki/File:BlankMap-World.svg"> this </a> </div>
+		<div style="text-align: center; margin:100px;"> <embed type="image/svg+xml" src="world-map.svg" id="svg map"> </div> 
+		
+		<div style="text-align: center;"> <a href = "https://en.wikipedia.org/wiki/File:BlankMap-World.svg"> Map Credits </a> </div>
 
 		<div id="flag info"> </div>
-
-		<a href="../index.html"> Back to Main Page </a>
 
 		<script>
 
 			window.onload=function(){
+
+				document.body.style.zoom="100%"
 				
 				var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
 				//var countries = ["fr", "in", "us", "ru", "au"];
@@ -47,7 +55,7 @@
 							region.addEventListener("mouseover", function(){
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
-										r.setAttribute('style', 'fill:red');
+										r.setAttribute('style', 'fill:#642');
 										document.getElementById("flag info").innerHTML = group.text;
 									}
 								}
