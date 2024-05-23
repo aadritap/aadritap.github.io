@@ -43,8 +43,9 @@
 			var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
 			//var countries = ["fr", "in", "us", "ru", "au"];
 			var continents = [{name:"asia", countries:["in", "au", "us", "ru"], text:"test for asia"}];
+			var countries = [{}]
 
-			function setCountries(){
+			function setGroups(){
 				for (const group of groups){
 					for (const country of group.countries){
 						for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
@@ -102,15 +103,40 @@
 				}
 			}
 
+			function setCountries(){
+				for (const [country, text] of Object.entries(countries)) {
+					for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
+						
+						region.removeEventListener("mouseover", region.mouseoverfn);
+						region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
+							for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
+								r.setAttribute('style', 'fill:#642');
+								document.getElementById("flag info").innerHTML = text;
+							}
+						});
+
+						region.removeEventListener("mouseout", region.mouseoutfn);
+						region.addEventListener("mouseout", region.mouseoutfn = function mouseoutfn(){
+							for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
+								r.setAttribute('style', 'fill:green');
+								document.getElementById("flag info").innerHTML = "";
+							}
+						});
+					}
+				}
+			}
+
 			window.onload=function(){
-				setCountries();
+				setGroups();
 			}
 
 			function radio(param){
 				if (param == "group"){
-					setCountries();
-				} else {
+					setGroups();
+				} else if (param == "continent") {
 					setContinents();
+				} else {
+					setCountries();
 				}
 			}
 				
