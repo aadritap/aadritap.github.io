@@ -12,13 +12,15 @@
 		A collection of memory tips I liked, interesting flag meanings, some historical background and pointing out common themes and elements. <br> 
 		Again, very much in progress & updated semi-frequently as I learn, but intend to cover every country flag eventually. no maps or images yet.
 
-		<div style="text-align: center;"> <embed type="image/svg+xml" src="world-map.svg" id="svg_map"> </div>
-		
 		<p> View country flag information by: </p>
 		<input type = "radio" name = "ch" value= "group" checked> <label for = "group"> Group </label>
 		<input type = "radio" name = "ch" value= "country"> <label for = "country"> Country </label>
 		<input type = "radio" name = "ch" value= "continent"> <label for = "continent"> Continent </label>
 		<input type = "radio" name = "ch" value= "all"> <labelfor = "all"> All </label>
+
+		<div style="text-align: center;"> <embed type="image/svg+xml" src="world-map.svg" id="svg map"> </div>
+
+		<div id="flag info"> </div>
 
 		<h2> Asia </h2>
 		<ul>
@@ -63,20 +65,22 @@
 
 				for (const group of groups){
 					for (const country of group.countries){
-						for (const region of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(country)){
+						for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
 
 							region.addEventListener("mouseover", function(){
 								for (const c of group.countries){
-									for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(c)){
+									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
 										r.setAttribute('style', 'fill:red');
+										document.getElementById("flag info").innerHTML = group.text;
 									}
 								}
 							});
 
 							region.addEventListener("mouseout", function(){
 								for (const c of group.countries){
-									for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(c)){
-										r.setAttribute('style', 'fill:red');
+									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
+										r.setAttribute('style', 'fill:green');
+										document.getElementById("flag info").innerHTML = "";
 									}
 								}
 							});
