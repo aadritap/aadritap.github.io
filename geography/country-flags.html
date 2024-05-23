@@ -49,7 +49,7 @@
 					for (const country of group.countries){
 						for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
 							
-							region.removeEventListener("mouseout", region.mouseoverfn);
+							region.removeEventListener("mouseover", region.mouseoverfn);
 							region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
@@ -78,7 +78,7 @@
 					for (const country of group.countries){
 						for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
 
-							region.removeEventListener("mouseout", region.mouseoverfn);
+							region.removeEventListener("mouseover", region.mouseoverfn);
 							region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
