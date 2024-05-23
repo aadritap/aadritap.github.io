@@ -64,11 +64,18 @@ window.onload=function(){
 	var z = myMap.getElementsByClassName("fr");
 
 	for (const region of z){
-		console.log(region);
-		region.setAttribute('style', 'fill: pink');
-		
-	}
+		region.addEventListener("mouseover",function(){
+			for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName("fr")){
+				r.setAttribute('style', 'fill:purple');
+			}
+		});
+		region.addEventListener("mouseout",function(){
+			for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName("fr")){
+				r.setAttribute('style', 'fill:pink');
+			}
+		});
 
+	}
 }
 
 </script>
