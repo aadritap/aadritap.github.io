@@ -5,7 +5,7 @@
 
 		<style> 
 			* { 
-				font-size: 55px;
+				font-size: 60px;
 			}
 
 			a:link, a:visited{
@@ -28,9 +28,9 @@
 		<h1 style = "text-align: center; font-size:90px"> Country Flags </h1>
 
 		Select By
-		<input type = "radio" name = "ch" value= "group" style="height:35px; width:35px; vertical-align: middle;" checked> <label for = "group"> Common Elements </label>
-		<input type = "radio" name = "ch" value= "continent" style="height:35px; width:35px; vertical-align: middle;"> <label for = "continent"> Continents </label>
-		<input type = "radio" name = "ch" value= "country" style="height:35px; width:35px; vertical-align: middle;"> <label for = "country"> Countries </label>
+		<input type = "radio" name = "ch" value= "group" style="height:35px; width:35px; vertical-align: middle;" onchange="radio("group");" checked> <label for = "group"> Common Elements </label>
+		<input type = "radio" name = "ch" value= "continent" style="height:35px; width:35px; vertical-align: middle;" onchange="radio("continent");"> <label for = "continent"> Continents </label>
+		<input type = "radio" name = "ch" value= "country" style="height:35px; width:35px; vertical-align: middle;" onchange="radio("country");"> <label for = "country"> Countries </label>
 
 		<div style="text-align: center; margin:100px;"> <embed type="image/svg+xml" src="world-map.svg" id="svg map"> </div> 
 		
@@ -40,17 +40,13 @@
 
 		<script>
 
-			window.onload=function(){
-				
-				var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
-				//var countries = ["fr", "in", "us", "ru", "au"];
-				//var continents = ["asia", "europe", "africa", "oceania", "antarctica", "north america", "south america"]
-
+			function setCountries(){
 				for (const group of groups){
 					for (const country of group.countries){
 						for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
-
-							region.addEventListener("mouseover", function(){
+							
+							region.removeEventListener("mouseout", region.mouseoverfn);
+							region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
 										r.setAttribute('style', 'fill:#642');
@@ -59,7 +55,8 @@
 								}
 							});
 
-							region.addEventListener("mouseout", function(){
+							region.removeEventListener("mouseout", region.mouseoutfn);
+							region.addEventListener("mouseout", region.mouseoutfn = function mouseoutfn(){
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
 										r.setAttribute('style', 'fill:green');
@@ -70,6 +67,54 @@
 						}
 					}
 				}
+			}
+
+			function setContinents(){
+				for (const group of continents.countries){
+					for (const country of group.countries){
+						for (const region of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
+
+							region.removeEventListener("mouseout", region.mouseoverfn);
+							region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
+								for (const c of group.countries){
+									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
+										r.setAttribute('style', 'fill:#642');
+										document.getElementById("flag info").innerHTML = group.text;
+									}
+								}
+							});
+
+							region.removeEventListener("mouseout", region.mouseoutfn);
+							region.addEventListener("mouseout", region.mouseoutfn = function mouseoutfn(){
+								for (const c of group.countries){
+									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
+										r.setAttribute('style', 'fill:green');
+										document.getElementById("flag info").innerHTML = "";
+									}
+								}
+							});
+						}
+					}
+				}
+			}
+
+			window.onload=function(){
+				
+				var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
+				//var countries = ["fr", "in", "us", "ru", "au"];
+				var continents = [{name:"asia", countries:["in", "au", "us"}]
+
+				setCountries();
+			}
+
+			function radio(param){
+				if (param == "group"){
+					setCountries();
+				} else {
+					setContinents();
+				}
+			}
+				
 
 				//repeat same for continents
 
@@ -91,7 +136,6 @@
 					}
 				}
 				*/
-			}
 		</script>
 	</body>
 </html>
