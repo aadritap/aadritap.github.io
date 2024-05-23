@@ -1,18 +1,13 @@
 <html>
 
-<head> 
-	<title> Remembering Country Flags </title>
-	<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-	<style>
-			img { width: 70%; height: auto;}
-	</style>
+	<head> 
+		<title> Remembering Country Flags </title>
 
+	</head>
 
- </head>
+	<body>
 
-<body>
-
-<h1> Remembering Country Flags </h1>
+		<h1> Remembering Country Flags </h1>
 
 A collection of memory tips I liked, interesting flag meanings, some historical background and pointing out common themes and elements. <br> 
 Again, very much in progress & updated semi-frequently as I learn, but intend to cover every country flag eventually. no maps or images yet.
@@ -61,19 +56,26 @@ Again, very much in progress & updated semi-frequently as I learn, but intend to
 window.onload=function(){
 
 	var myMap = document.getElementById("svg_map").getSVGDocument();
-	var z = myMap.getElementsByClassName("fr");
+
+	var countries = ["fr", "in", "us", "ru", "au"];
+
+	for (const country of countries){
+
+	var z = myMap.getElementsByClassName(country);
 
 	for (const region of z){
 		region.addEventListener("mouseover",function(){
-			for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName("fr")){
+			for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(country)){
 				r.setAttribute('style', 'fill:purple');
 			}
 		});
 		region.addEventListener("mouseout",function(){
-			for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName("fr")){
+			for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(country)){
 				r.setAttribute('style', 'fill:pink');
 			}
 		});
+
+	}
 
 	}
 }
