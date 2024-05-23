@@ -56,16 +56,41 @@
 		<script>
 
 			window.onload=function(){
-
-				var myMap = document.getElementById("svg_map").getSVGDocument();
-
+				
+				var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
 				var countries = ["fr", "in", "us", "ru", "au"];
+				var continents = ["asia", "europe", "africa", "oceania", "antarctica", "north america", "south america"]
 
-				for (const country of countries){
+				for (const group of groups){
+					for (const country of group.countries){
+						for (const region of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(country)){
 
-					var z = myMap.getElementsByClassName(country);
+							region.addEventListener("mouseover", function(){
+								for (const c of group.countries){
+									for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(c)){
+										r.setAttribute('style', 'fill:red');
+									}
+								}
+							});
 
-					for (const region of z){
+							region.addEventListener("mouseout", function(){
+								for (const c of group.countries){
+									for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(c)){
+										r.setAttribute('style', 'fill:red');
+									}
+								}
+							});
+						}
+					}
+				}
+
+				//repeat same for continents
+
+				/*
+				for (const c of countries){
+
+					var country = myMap.getElementsByClassName(c);
+					for (const region of country){
 						region.addEventListener("mouseover",function(){
 							for (const r of document.getElementById("svg_map").getSVGDocument().getElementsByClassName(country)){
 								r.setAttribute('style', 'fill:red');
@@ -78,6 +103,7 @@
 						});
 					}
 				}
+				*/
 			}
 		</script>
 	</body>
