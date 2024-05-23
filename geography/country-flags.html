@@ -40,6 +40,10 @@
 
 		<script>
 
+			var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
+			//var countries = ["fr", "in", "us", "ru", "au"];
+			var continents = [{name:"asia", countries:["in", "au", "us"], text:"test for asia"}];
+
 			function setCountries(){
 				for (const group of groups){
 					for (const country of group.countries){
@@ -99,11 +103,6 @@
 			}
 
 			window.onload=function(){
-				
-				var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
-				//var countries = ["fr", "in", "us", "ru", "au"];
-				var continents = [{name:"asia", countries:["in", "au", "us"], text:"test for asia"}];
-
 				setCountries();
 			}
 
