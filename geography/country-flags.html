@@ -29,7 +29,7 @@
 
 		Select By
 		<input type = "radio" name = "ch" value= "group" style="height:35px; width:35px; vertical-align: middle;" onchange="ch('group');" checked> <label for = "group"> Common Elements </label>
-		<input type = "radio" name = "ch" value= "continent" style="height:35px; width:35px; vertical-align: middle;" onchange="ch('continent');"> <label for = "continent"> Continents </label>
+		<!-- input type = "radio" name = "ch" value= "continent" style="height:35px; width:35px; vertical-align: middle;" onchange="ch('continent');"> <label for = "continent"> Continents </label -->
 		<input type = "radio" name = "ch" value= "country" style="height:35px; width:35px; vertical-align: middle;" onchange="ch('country');"> <label for = "country"> Countries </label>
 
 		<div style="text-align: center; margin:100px;"> <embed type="image/svg+xml" src="world-map.svg" id="svg map"> </div> 
@@ -49,20 +49,21 @@
 							
 							region.removeEventListener("mouseover", region.mouseoverfn);
 							region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
+								document.getElementById("flag info").innerHTML = group.text;
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
 										r.setAttribute('style', 'fill:#642');
-										document.getElementById("flag info").innerHTML = group.text;
+										document.getElementById("flag info").innerHTML += countries.c;
 									}
 								}
 							});
 
 							region.removeEventListener("mouseout", region.mouseoutfn);
 							region.addEventListener("mouseout", region.mouseoutfn = function mouseoutfn(){
+								document.getElementById("flag info").innerHTML = "";
 								for (const c of group.countries){
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
 										r.setAttribute('style', 'fill:green');
-										document.getElementById("flag info").innerHTML = "";
 									}
 								}
 							});
@@ -71,6 +72,7 @@
 				}
 			}
 
+			/*
 			function setContinents(){
 				for (const group of continents){
 					for (const country of group.countries){
@@ -99,6 +101,7 @@
 					}
 				}
 			}
+			*/
 
 			function setCountries(){
 				for (const [country, text] of Object.entries(countries)) {
@@ -114,9 +117,9 @@
 
 						region.removeEventListener("mouseout", region.mouseoutfn);
 						region.addEventListener("mouseout", region.mouseoutfn = function mouseoutfn(){
+							document.getElementById("flag info").innerHTML = "";
 							for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
 								r.setAttribute('style', 'fill:green');
-								document.getElementById("flag info").innerHTML = "";
 							}
 						});
 					}
@@ -130,8 +133,8 @@
 			function ch(param){
 				if (param == "group"){
 					setGroups();
-				} else if (param == "continent") {
-					setContinents();
+				/*} else if (param == "continent") {
+					setContinents();*/
 				} else {
 					setCountries();
 				}

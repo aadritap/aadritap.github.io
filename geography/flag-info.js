@@ -1,7 +1,18 @@
 
-var groups = [{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, {name:"slavic", countries:["ru","pl"], text:"test for slavic"}];
-var continents = [{name:"asia", countries:["in", "au", "us", "ru"], text:"test for asia"}];
-var countries = {"in":"test for india", "ru":"t"};
+var groups = [
+	{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, 
+	{name:"slavic", countries:["ru","pl"], text:"test for slavic"}, 
+	{name:"oceania", countries:["nr"], text: "text for oceania"}
+];
+
+//var continents = [{name:"asia", countries:["in", "au", "us", "ru"], text:"test for asia"}];
+
+var countries = {
+	"in":"test for india", 
+	"ru":"text for russia", 
+	"pl":"text for poland",
+	"nr":"<h1> Nauru </h1> <p> The yellow band with the blue background is meant to represent the equator and the Pacific Ocean. The star just below the yellow band represents Nauru's location as an island 1 degree below the equator. The 12 points of the star represent the island's original twelve tribes, and the white colour of the star represents phosphate, as that used to be a major natural resource of Nauru. </p>"
+};
 
 /*
 <h2> Asia </h2>
