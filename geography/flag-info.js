@@ -6,6 +6,7 @@ var groups = [
 ];
 
 //var continents = [{name:"asia", countries:["in", "au", "us", "ru"], text:"test for asia"}];
+//test
 
 var countries = {
 	"in":"test for india", 

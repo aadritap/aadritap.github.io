@@ -109,9 +109,9 @@
 						
 						region.removeEventListener("mouseover", region.mouseoverfn);
 						region.addEventListener("mouseover", region.mouseoverfn = function mouseoverfn(){
+							document.getElementById("flag info").innerHTML = text;
 							for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(country)){
 								r.setAttribute('style', 'fill:#642');
-								document.getElementById("flag info").innerHTML = text;
 							}
 						});
 
