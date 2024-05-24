@@ -1,7 +1,7 @@
 
 var groups = [
 	{name:"nordic", countries:["dk","no","fi","se","is"], text:"test for nordic"}, 
-	{name:"slavic", countries:["ru","pl"], text:"test for slavic"}, 
+	{name:"slavic", countries:["ru","pl"], text:"text for slavic"}, 
 	{name:"oceania", countries:["nr"], text: "text for oceania"}
 ];
 
