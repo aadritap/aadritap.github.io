@@ -54,6 +54,7 @@
 									for (const r of document.getElementById("svg map").getSVGDocument().getElementsByClassName(c)){
 										r.setAttribute('style', 'fill:#642');
 									}
+									document.getElementById("flag info").innerHTML += "<img src = '"+c+".svg'> </img>";
 									document.getElementById("flag info").innerHTML += countries[c];
 								}
 							});
