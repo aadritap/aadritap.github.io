@@ -67,3 +67,20 @@ body {
 #buttonRight{
        border-left: 5vmin solid white;
 }
+
+a{
+    width: 150vmin;
+    margin:0 auto;
+    text-align:left;
+    color:white;
+    font-family:monospace;
+    font-size:2.5vmin;
+}
+
+a:visited, a:link{
+	color:white
+}
+
+a:hover{
+	color:#881020;
+}
