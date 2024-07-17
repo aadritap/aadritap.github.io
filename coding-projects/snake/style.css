@@ -1,0 +1,69 @@
+body {
+    padding:0;
+    margin:0 auto;
+    text-align:center;
+    background-color: #FF3050;
+}
+
+#score {
+    color:white;
+    font-family:sans-serif;
+}
+
+#board {
+    /*80+2.5+2.5+(from buttons)5+5=95 +2.5vmin space on either sides of the buttons*/
+    margin-left:2.5vmin;
+    margin-right:2.5vmin;
+    width:80vmin;
+    height:80vmin;
+}
+
+.snake{
+    background-color:#FF3050;
+    border-radius:10%;
+    /* give cell one white side*/
+    border-top:solid white;
+    border-left:solid transparent;
+    border-right:solid transparent;
+    border-bottom:solid transparent;
+}
+
+.food{
+    background-color:white;
+    border-radius:50%; /*make cell circular*/
+    border:solid white;
+}
+
+.empty{
+    background-color:white;
+    border-radius:10%;
+    border:solid white;
+}
+
+#rowContainor{
+    display: table;
+    margin:0 auto;
+}
+
+#buttonContainorLeft, #buttonContainorRight {
+    display: table-cell;
+    vertical-align:middle;
+}
+
+/*make buttons triangular*/
+#buttonLeft, #buttonRight{
+    width:0;
+    height:0;
+    margin:0 auto;
+    border-top: 2.5vmin solid transparent;
+    border-bottom: 2.5vmin solid transparent;
+}
+
+/*5+5+(from board)80+2.5+2.5=95 +2.5vmin space on either sides of the buttons*/
+#buttonLeft{
+       border-right: 5vmin solid white;
+}
+
+#buttonRight{
+       border-left: 5vmin solid white;
+}

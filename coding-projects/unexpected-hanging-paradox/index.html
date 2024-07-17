@@ -1,0 +1,108 @@
+<!--MY FIRST HTML PROGRAMME-->
+
+<!DOCTYPE html>
+<html> <body>
+
+<h1>UNEXPECTED HANGING PARADOX</h1>
+<hr>
+<h2>THE PARADOX</h2>
+<div id="explanation">
+    A judge tells a condemned prisoner that he will be hanged at noon on one weekday in the following week but that the execution will be a surprise to the prisoner. He will not know the day of the hanging until the executioner knocks on his cell door at noon that day.
+    <p>Having reflected on his sentence, the prisoner draws the conclusion that he will escape from the hanging. His reasoning is in several parts. He begins by concluding that the "surprise hanging" can't be on Friday, as if he hasn't been hanged by Thursday, there is only one day left - and so it won't be a surprise if he's hanged on Friday. Since the judge's sentence stipulated that the hanging would be a surprise to him, he concludes it cannot occur on Friday.</p>
+    <p>He then reasons that the surprise hanging cannot be on Thursday either, because Friday has already been eliminated and if he hasn't been hanged by Wednesday noon, the hanging must occur on Thursday, making a Thursday hanging not a surprise either. By similar reasoning he concludes that the hanging can also not occur on Wednesday, Tuesday or Monday. Joyfully he retires to his cell confident that the hanging will not occur at all.</p>
+    <p>The next week, the executioner knocks on the prisoner's door at noon on Wednesday — which, despite all the above, was an utter surprise to him</p>
+</div>
+
+<h2>HOW TO PLAY</h2>
+<p>This game tries to illustrate this paradox. Click to go to the next day. If you know for sure which day the execution is on, click on the button to see if you are right</p>
+
+<div onclick="nextDay()" id="gamespace"> <p id="day"> </p> </div> <br>
+<button onclick="death('MONDAY')">M</button>
+<button onclick="death('TUESDAY')">T</button>
+<button onclick="death('WEDNESDAY')">W</button>
+<button onclick="death('THURSDAY')">T</button>
+<button onclick="death('FRIDAY')">F</button>
+<br>
+
+<p><a href="https://www.dlib.si/stream/URN:NBN:SI:DOC-8DOT50R7/a5bee943-14cc-4a3d-a4e0-dd607160dc39/PDF">A paper describing in detail the flaw in this 'paradox'</a></p>
+
+<style>
+
+body {
+    background-color:#c83;
+    text-align:center;
+}
+
+#gamespace{
+    background-color:black;
+    width:95vw; 
+    height:60vh;   
+}
+
+#day{
+    color:white;
+    font-size:10vw;
+    vertical-align:center;
+    line-height:60vh;
+}
+
+button{
+    height:10vw;
+    width:15vw;
+    background-color:black;
+    color:white;
+    border-width:0px   
+}
+
+#explanation{
+    height:40vw;
+    overflow-y:scroll;
+}
+
+a{
+    color:white;
+}
+
+</style>
+<script>
+
+var week=["SUNDAY","MONDAY","TUESDAY","WEDNESDAY","THURSDAY","FRIDAY"];
+var day,deathDay;
+nextWeek();
+
+function nextDay()
+{
+    navigator.vibrate(50);
+    if (day==deathDay-1)
+    { 
+        alert("DEATH");
+        nextWeek();
+    }
+     else
+    {
+        document.getElementById("day").innerHTML=week[day+1];
+    document.getElementsByTagName("button")[day].style.visibility="hidden";
+    day++;
+    }                   
+}
+    
+function nextWeek()
+{
+    deathDay=(Math.floor(Math.random()*5))+1;
+    day=0;    document.getElementById("day").innerHTML=week[day];     
+    for (var i=0;i<5;i++)
+        document.getElementsByTagName("button")[i].style.visibility="visible";
+}
+    
+function death(d)
+{
+    if (d==week[deathDay])      
+        alert("CORRECT");        
+    else
+        alert("Wrong, your execution was scheduled for "+week[deathDay]);
+    nextWeek();
+}
+    
+</script>
+    
+</body></html>

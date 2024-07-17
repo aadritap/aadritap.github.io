@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"></meta>
+<script src="script.js"></script>
+</head>    
+<body>
+
+<span class="pumpkin" onclick="alert('Why didn\'t the mummy go to the haunted house? \n\nCause it didn\'t have the guts');">🎃🎃🎃🎃🎃</span><br><br>
+<span id="ghost" onclick="alert('Happy Halloween!')">👻</span><br><br>
+<span class="pumpkin" onclick="alert('Mummies listen to wrap music');">🎃🎃🎃🎃🎃</span><br><br>
+<div id="conversation"></div>
+<div id="buttons"></div>
+
+<style>
+
+body{
+    background-color:black;
+    text-align:center;
+}
+
+#ghost{
+    font-size:50vw;
+}
+
+.pumpkin{
+    font-size:15vw;
+}
+
+button{
+    min-width:20vw;
+    min-height:10vw;
+    margin:5px;
+    background-color:#f71;
+    border-color:#e60;
+    color:white;
+    font-family:"Times New Roman";
+}
+
+#conversation{
+    margin-left:10px;
+    color:white;
+    text-align:left;
+    overflow-y:scroll;
+    max-height:80vh;
+}
+
+#buttons{
+    color:white;
+    font-family:"Times New Roman";
+    font-size:10vw;
+}
+
+.narrative{
+    font-family:monospace;    
+}
+
+.actions{
+    font-style:bold;
+}
+    
+</style> 
+      
+<script>
+
+var inventory="";
+var pages=[];
+
+setPages(); //in js page
+var buttons=0;
+var oldPg=0;
+var pg=0;
+newPage();
+
+function newPage()
+{
+    buttons=pages[pg].length-2;
+    if(buttons==0)                               
+   document.getElementById("buttons").innerHTML="THE END";
+    else
+    {
+        document.getElementById("buttons").innerHTML="";
+        for (i=1;i<=buttons;i++)
+        {
+            var temp1=document.createElement("button");
+temp2=document.createTextNode(pages[pg][i][0]);
+temp1.appendChild(temp2);
+temp1.addEventListener("click",chosen.bind(this,i)); 
+         document.getElementById("buttons").appendChild(temp1); 
+        } 
+    }                                 
+            document.getElementById("conversation").innerHTML+="<span class='narrative'>"+pages[pg][0]+"</span><br><br>";
+    document.getElementsByTagName("body")[0].scrollTop=document.getElementsByTagName("body")[0].scrollHeight;
+    document.getElementById("conversation").scrollTop=document.getElementById("conversation").scrollHeight;
+}
+
+function chosen(b)
+{
+    var oldPg=pg;
+    navigator.vibrate(50);  
+    if (pages[pg][b].length==2) 
+    {
+            document.getElementById("conversation").innerHTML+='You decide to <span class="actions">'+pages[pg][b][0]+"<br><br></span>";
+        pg=pages[pg][b][1];
+    }
+    else
+    {
+        document.getElementById("conversation").innerHTML+='<span class="actions">'+pages[pg][b][1]+"<br><br></span>";
+        pg=pages[pg][b][2];
+    }
+    pages[oldPg][buttons+1]();
+    newPage();
+}
+
+</script>
+</body>
+</html>

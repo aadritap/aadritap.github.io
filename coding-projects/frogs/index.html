@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html> <body>
+
+<h1> THE FROG PROBLEM</h1>
+
+<br /> <br /> <div id="pond"> </div> <br /> <br />
+
+<div id="explanation"> There's a common math problem in which a pond has 13, 15, and 17 frogs of three different colors. When two frogs of different colors meet, they both turn into the third color. Is it possible to turn all the frogs into the same color?</div>
+
+<script>
+
+//setting up the pond with 13 purple frogs, 15 green frogs, and 17 yellow frogs
+
+var pond="";
+
+for (var i=0; i<13; i++)
+    pond+="<span class='frog' onClick='changeColor(this)'>💜</span> ";
+for (var i=0; i<15; i++)
+    pond+="<span class='frog' onClick='changeColor(this)'>💚</span> ";
+for (var i=0; i<17; i++)
+    pond+="<span class='frog' onClick='changeColor(this)'>💛</span> ";
+document.getElementById("pond").innerHTML=pond;
+
+/*******************/
+
+var lastFrog="";
+
+function changeColor(frog)
+{
+    if (lastFrog=="") //if no other frog has been chosen, make this the chosen frog
+        lastFrog=frog;
+    else
+    {
+        //setting both the frogs to the third frog color or alerting the user that they have picked two frogs of the same color and resetting the last frog picked
+        
+        var result=third(lastFrog.innerHTML,frog.innerHTML);
+        if (result=="invalid")
+            alert("pick a different frog");
+        else
+        {
+            lastFrog.innerHTML=result;
+            frog.innerHTML=result;
+        }
+        lastFrog="";
+    }
+}
+
+//when given any two frog colors, find the color they should turn into
+
+function third (c1,c2)
+{
+    if (c1==c2)
+        return "invalid";
+    if ((c1=="💚" && c2=="💛") || (c1=="💛" && c2=="💚"))
+        return "💜";
+    if ((c1=="💚" && c2=="💜") || (c1=="💜" && c2=="💚"))
+        return "💛";
+    if ((c1=="💜" && c2=="💛") || (c1=="💛" && c2=="💜"))
+        return "💚";
+}
+
+</script>
+
+<style>
+
+body{
+    background-color:#fe9;
+}
+
+#pond, h1{
+    text-align:center;
+}
+
+h1{
+    font-size:2em
+}
+
+.frog{
+    font-size:2em;
+}
+
+.frog:hover {
+    cursor: pointer;
+}
+
+#explanation{
+    font-size:1em;
+    font-family:monospace;
+    text-align:justify;
+    margin:1em;
+}
+
+</style>
+
+</body> </html>   
