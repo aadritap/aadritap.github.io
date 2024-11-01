@@ -1,0 +1,129 @@
+
+<!doctype html>
+<html>
+
+<head> 
+    <title> D3 Tutorial </title>
+    <script src="https://d3js.org/d3.v7.min.js"> </script>
+</head>
+
+<body>
+    
+    <p> Bubble Sort </p>
+
+    <div id = "barChart"> </div>
+
+    <button onclick = "bubbleSort()"> Bubble Sort </button>
+    <button> Insertion Sort </button>
+    <br>
+    <button onclick = "shuffle()"> Shuffle </button>
+
+    
+
+    <script>
+
+        //Initial Work
+
+        const canvasWidth = 500;
+        const canvasHeight = 200;
+        var barCount = 20;
+        var barWidth = canvasWidth/barCount;
+        var barHeightScale = canvasHeight/barCount;
+
+        const rate = 300;
+
+        var color = d3.scaleLinear().domain([0, barCount]).range(["lightgreen", "darkgreen"]);
+
+        var canvas = d3.select("#barChart")
+            .append("svg")
+            .attr("width", canvasWidth)
+            .attr("height", canvasHeight)
+            .attr("style", "outline: thin solid black");
+
+        var arr= [];
+        for (var i=1; i<=barCount; i++){
+            arr.push(i);
+        }
+
+
+        canvas.selectAll("rect")
+                .data(arr)
+                .enter()
+                .append("rect")
+                    .attr("width", barWidth)
+                    .attr("height", function(d){return d*barHeightScale;})
+                    .attr("x", function(d, i){return i*barWidth;})
+                    .attr("y", function(d){return barHeightScale*(barCount-d);})
+                    .attr("fill", function(d){return color(d)});
+
+                    
+        shuffle();
+        
+        // Important functions
+ 
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function shuffle(){
+            arr = arr.sort(() => Math.random() - 0.5);
+            updateChart();
+        }
+
+        function updateChart(specialBar = -1, specialBar2 = -1){
+            canvas.selectAll("rect")
+                .data(arr)
+                .attr("width", barWidth)
+                .attr("height", function(d){return d*barHeightScale;})
+                .attr("x", function(d, i){return i*barWidth;})
+                .attr("y", function(d){return barHeightScale*(barCount-d);})
+                .attr("fill", function(d, i){if (i==specialBar) {return d3.color("blue")} else if (i==specialBar2) {return d3.color ("red")} else {return color(d);}});   
+        }
+
+
+        // Sorting Algorithms ***************************************************
+
+        //Bubble Sort
+
+        function bubbleSort(){
+
+            delayedLoop();
+
+            async function delayedLoop(){
+               for (var i = 0; i < arr.length; i++) {
+                    var sorted = true;
+                    for (var j = 0; j < arr.length -1 /*- i -1*/; j++) {
+                       
+                        updateChart(j);
+                        await sleep(rate);
+                        
+                        if (arr[j] > arr[j+1]){
+                            updateChart (j, j+1);
+                            await sleep(rate);
+                            var temp = arr[j];
+                            arr[j] = arr[j+1];
+                            arr[j+1]=temp;
+                            updateChart (j+1, j);
+                            await sleep(rate);
+                            sorted = false;
+                        }
+                    }
+
+                    updateChart (arr.length - 1 /*- i - 1*/);
+                    await sleep(rate);
+
+                    if (sorted){
+                            break;
+                        }
+
+                }
+
+                updateChart();
+            }
+        }
+        
+    </script>
+
+</body>
+
+</html>
