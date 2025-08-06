@@ -1,5 +1,36 @@
 <html>
-<title> Hérigone's Mnemonic System </title>
+
+<head>
+
+	<title> Hérigone's Mnemonic System </title>
+	
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+
+	<script>
+
+	function cleanString (s){
+		console.log(s);
+		let t = s.replace(/[^a-zA-Z0-9 ]/g, '').toLowerCase();
+		console.log(t);
+		return t;
+	}
+
+	$(function (){
+		$(".sentences").on("input", function(){
+			if (cleanString($(this).attr("name")) == cleanString($(this).val())) {
+				$(this).css("background-color", "lightgreen");
+			} else if (cleanString($(this).attr("name")).startsWith(cleanString($(this).val()))) {
+				$(this).css("background-color", "lightblue");
+			} else {
+				$(this).css("background-color", "indianred");
+			}
+		});
+
+	});
+
+	</script> 
+
+</head>
 
 <body style = "padding: 30px;">
 
@@ -39,7 +70,37 @@ e.g:  <br>
 'Lorem ipsum dolor sit amet' -> LRM PSM DLR ST MT -> 5439031540101 <br>
 'Dorothy Mary Crowfoot Hodgkin' -> DRTh MR KRFT JKN -> 141347481672 <br> <br>
 
-Hence, to form a mnemonic for a string of digits, you just need to come up with a phrase that has the required consonants. For example, for the first 100 digits of PI (taken from <a href="https://coolmathstuff123.blogspot.com/2013/11/how-you-can-memorize-2000-digits-of.html?m=1">a blogpost by Ethan Brown</a>), you can use: 'My turtle Pancho will, my love, pick up my new mover, Ginger. My movie monkey plays in a favorite bucket. Ship my puppy Michael to Sullivan's backrubber. A really open music video cheers Jenny F. Jones. Have a baby fish knife so Marvin will marinate the goosechick.' It's true that it's not the most natural, and also requires some effort to memorise, but memorising 5 sentences is a lot easier and more reliable than remembering 100 arbitrary digits and can be done in a few minutes. Try it! <br> <br>
+Hence, to form a mnemonic for a string of digits, you just need to come up with a phrase that has the required consonants. For example, for the first 100 digits of PI (taken from <a href="https://coolmathstuff123.blogspot.com/2013/11/how-you-can-memorize-2000-digits-of.html?m=1">a blogpost by Ethan Brown</a>), you can memorise the following five setences: <br>
+<ol>
+<li> My turtle Pancho will, my love, pick up my new mover, Ginger. </li>
+<li> My movie monkey plays in a favorite bucket. </li>
+<li> Ship my puppy Michael to Sullivan's backrubber. </li> 
+<li> A really open music video cheers Jenny F. Jones. </li>
+<li> Have a baby fish knife so Marvin will marinate the goosechick. </li>
+</ol>
+It's true that it's not the most natural, and also requires some effort to memorise, but memorising 5 sentences is a lot easier and more reliable than remembering 100 arbitrary digits and can be done in a few minutes. Try it! <br> <br>
+
+	Sentence 1: <input type = "text" class="sentences" name="My turtle Pancho will, my love, pick up my new mover, Ginger."> </id> <br>
+	Corresponding digits: <input type = "text" class="sentences" name="3.14159265358979323846264"> </id> <br> 
+	<br>
+	
+	Sentence 2: <input type = "text" class="sentences" name="My movie monkey plays in a favorite bucket."> </id> <br>
+	Corresponding digits: <input type = "text" class="sentences" name="33832795028841971"> </id> <br> 
+	<br>
+	
+	Sentence 3: <input type = "text" class="sentences"name="Ship my puppy Michael to Sullivan's backrubber."> </id> <br>
+	Corresponding digits: <input type = "text" class="sentences" name="6939937510582097494"> </id> <br> 
+	<br>
+	
+	Sentence 4: <input type = "text" class="sentences" name="A really open music video cheers Jenny F. Jones."> </id> <br>
+	Corresponding digits: <input type = "text" class="sentences" name="459230781640628620"> </id> <br> 
+	<br>
+	
+	Sentence 5: <input type = "text" class="sentences" name="Have a baby fish knife so Marvin will marinate the goosechick."> </id> <br>
+	Corresponding digits: <input type = "text" class="sentences" name="8998628034825342117067"> </id> <br> 
+	<br>
+	
+	Complete 100 Digits of PI: <input type = "text" class="sentences" name="3.141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067"> </id> <br><br>
 
 I randomly generated 3 phone numbers to try this: <br>
 88718 17668: Fave activity? (To) catch Shiva <br>
@@ -55,7 +116,7 @@ A desktop application: <a href ="https://www.got2know.net/"> https://www.got2kno
 Wikipedia page with nouns, verbs, and objects for all 2 digit combinations: <a href="https://en.wikipedia.org/wiki/Mnemonic_major_system">https://en.wikipedia.org/wiki/Mnemonic_major_system</a> <br> <br>
 
 
-An interesting article on a similar system developed in South India: <a href="https://en.wikipedia.org/wiki/Katapayadi_system">https://en.wikipedia.org/wiki/Katapayadi_system</a>, which works for the Devanigiri script.
+An interesting article on a similar system developed in South India: <a href="https://en.wikipedia.org/wiki/Katapayadi_system">https://en.wikipedia.org/wiki/Katapayadi_system</a>, which also works for the Devanigiri script.
 
 </body>
 </html>
