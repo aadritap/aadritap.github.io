@@ -1,0 +1,529 @@
+<html>
+	<head>
+	
+		<title> Bagh Chal </title>
+		<style> 
+			h1 {
+				font-family: 'Brush Script MT', cursive;
+				font-size: 80px;
+				color: white;
+				margin: 20px 0 20px 0;
+			}
+			canvas{
+				position:absolute;
+				margin: 0;
+				left:0;
+				right:0;
+				margin-left:auto;
+				margin-right:auto;
+			}
+			
+			#canvasBG{
+				z-index:1;
+				background-color: #5f6527;
+			}
+			
+			#canvasUI{
+				z-index: 2;
+			}
+			#myCanvas{
+				z-index:3;
+				pointer-events: none;
+			}
+
+			#canvasContainer{
+				position: relative;
+
+			}
+		</style>
+	</head>
+
+	<body align="center" bgcolor="#5f6527">
+
+		<h1> Bagh-Chal </h1>
+		
+		<p id="gameResult" height = "20px"> </p>
+		
+		<p id="mousepos" height = "20px"> </p>
+		
+		<p id="mousepos2" height = "20px"> </p>
+
+		<div id="canvasContainer">
+			<canvas id="myCanvas" width="1260" height="800"> </canvas>
+			<canvas id="canvasBG" width="1260" height="800"> </canvas>
+			<canvas id="canvasUI" width="1260" height="800"> </canvas>
+		</div>
+
+		<script>
+
+			/*
+			1. scale down size
+			2. add list of rules
+			3. add win conditions
+			4. make selection in shape of animal (not hard to do, how to make opacity?)
+			5. add replay button
+			*/
+
+			/* ---------------------------------------------------------------- background canvas -------------------------------------------*/
+			
+			var bg_image = new Image();
+			bg_image.src = "background.jpg";
+
+			var canvasbg = document.getElementById("canvasBG");
+			var ctxbg = canvasbg.getContext("2d");
+			bg_image.onload = function (){			
+				ctxbg.drawImage (bg_image, 230, 0, 800, 800);
+				console.log("background loaded");
+			}
+
+
+			/* -------------------------------------------------------------------gameplay canvas--------------------------------------------*/
+			//setting up canvas, importing images
+
+			var myCanvas = document.getElementById ("myCanvas");
+			var ctx = myCanvas.getContext("2d");
+
+			var tiger_image = new Image();
+			tiger_image.src = "tiger.png";
+			tiger_image.onload = function (){
+				console.log("tiger loaded");
+				updateBoard();
+			}
+
+			var lamb_image = new Image();
+			lamb_image.src = "lamb.png";
+			lamb_image.onload = function (){
+				console.log("lamb loaded");
+				updateBoard();
+			}
+
+
+			//function for drawing background: not being used anymore
+			/*
+			drawBackground();
+			function drawBackground(){
+
+				ctx.beginPath();
+
+				for (var i=100; i<=700; i+=150){
+					ctx.moveTo(i, 100);
+					ctx.lineTo(i, 700);
+
+					ctx.moveTo(100, i);
+					ctx.lineTo(700, i);
+				}
+
+				ctx.moveTo (100,100);
+				ctx.lineTo(700, 700);
+
+				ctx.moveTo (100,700);
+				ctx.lineTo(700, 100);
+
+				ctx.moveTo (100,400);
+				ctx.lineTo (400, 100);
+
+				ctx.moveTo (700,400);
+				ctx.lineTo (400, 700);
+
+				ctx.moveTo (400,100);
+				ctx.lineTo (700, 400);
+
+				ctx.moveTo (400,100);
+				ctx.lineTo (700, 400);
+
+				ctx.moveTo (100, 400);
+				ctx.lineTo (400, 700);
+
+				ctx.lineWidth = 2;
+				ctx.stroke();
+			}
+			*/
+
+			var killedLambs = 0;
+			var unplacedLambs = 20;
+
+			function updateBoard(){
+				ctx.clearRect(0, 0, 1260, 800);
+
+				//drawBackground();
+				for (var i=0; i<5; i++){
+					for (var j=0; j<5; j++){
+						if (board[i][j]=="tiger"){
+							draw_tiger(i, j);
+						}
+						if (board[i][j]=="lamb"){
+							draw_lamb(i, j);
+						}
+					}
+				}
+				for (var i=0; i<unplacedLambs; i++){
+					draw_unplaced_lamb(i);
+				}				
+				for (var i=0; i<killedLambs; i++){
+					draw_dead_lamb(i);
+				}
+			}
+
+			function draw_tiger (y, x){
+				ctx.drawImage (tiger_image, (330+x*150)-50, (100+y*150)-50, 100, 100);
+			}
+
+			function draw_lamb (y, x) {
+				ctx.drawImage (lamb_image, (330+x*150)-65, (100+y*150)-65, 130, 130);
+			}
+		
+			function draw_unplaced_lamb (i){
+				if (i<10){
+					ctx.drawImage (lamb_image, 20, (55+i*75)-45, 90, 90);
+				} else {
+					ctx.drawImage (lamb_image, 120, (55+(i-10)*75)-45, 90, 90);
+				}
+			}
+
+			function draw_dead_lamb (i){
+				if (i<10){
+					ctx.drawImage (lamb_image, 1050, (55+i*75)-45, 90, 90);
+				} else {
+					ctx.drawImage (lamb_image, 1150, (55+(i-10)*75)-45, 90, 90);
+				}
+			}
+
+			/*-------------------------------------------------- mouse-events and the UI canvas -----------------------------------------------------*/
+
+			
+			var cui = document.getElementById ("canvasUI");
+			var ctxui = cui.getContext("2d");
+
+			var tomove = "placelamb";
+			var selectedTiger = [0,0];
+			var selectedLamb = [0,0];
+
+			//handling mouse hovering UI
+
+			cui.addEventListener("mousemove", mouseMove, false);
+
+			function mouseMove (e){
+			
+				ctxui.clearRect (0, 0, cui.width, cui.height);
+				if (tomove == "tiger2"){
+					draw_tiger_selection (selectedTiger[0], selectedTiger[1]);
+				}
+				if (tomove == "lamb2"){
+					draw_lamb_selection (selectedLamb[0], selectedLamb[1]);
+				}
+
+				var pos = getMousePos (e);
+
+				if (pos!=-1){
+					//case where we're adding lambs
+					if (tomove == "placelamb") {
+						if (board[pos[1]][pos[0]] == "empty"){
+							draw_ui_lamb(pos[0], pos[1]);
+						}
+					}
+
+					//case where we're in part 1 of moving lamb
+					if (tomove == "lamb1"){
+						if (board[pos[1]][pos[0]] == "lamb"){
+							draw_lamb_selection(pos[0], pos[1]);
+						}
+					}
+
+					//case where we're in part 2 of moving lamb
+					if (tomove == "lamb2"){
+							
+						if (board[pos[1]][pos[0]] == "empty"){
+							var tox = pos[1];
+							var toy = pos[0];
+							var fromx = selectedLamb[1];
+							var fromy = selectedLamb[0];
+
+							var dx = Math.abs(fromx - tox);
+							var dy = Math.abs(fromy - toy);
+						
+							if ((dx==1 && dy==0) || (dx==0 && dy==1) || (dx==1 && dy==1 && ((fromx+fromy) % 2) ==0)){
+								draw_lamb_move_selection(pos[0], pos[1]);
+							}
+						} else if (board[pos[1]][pos[0]] == "lamb") {
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							draw_lamb_selection(pos[0], pos[1]);
+						}
+					}
+
+					//case where we're in part 1 of moving tiger
+					if (tomove == "tiger1"){
+						if (board[pos[1]][pos[0]] == "tiger"){
+							draw_tiger_selection(pos[0], pos[1]);
+						}
+					}
+
+					//case where we're in part 2 of moving tiger
+					if (tomove == "tiger2"){
+							
+						if (board[pos[1]][pos[0]] == "empty"){
+							var tox = pos[1];
+							var toy = pos[0];
+							var fromx = selectedTiger[1];
+							var fromy = selectedTiger[0];
+
+							var dx = Math.abs(fromx - tox);
+							var dy = Math.abs(fromy - toy);
+						
+							if ((dx == 2 && dy == 2 && ((fromx+fromy) % 2) ==0) || (dx == 2 && dy == 0) || (dx == 0 && dy == 2)){
+								if (board[Math.floor((fromx+tox)/2)][Math.floor((fromy+toy)/2)] == "lamb"){
+									draw_tiger_move_selection(pos[0], pos[1]);
+								}
+							}
+							if ((dx==1 && dy==0) || (dx==0 && dy==1) || (dx==1 && dy==1 && ((fromx+fromy) % 2) ==0)){
+								draw_tiger_move_selection(pos[0], pos[1]);
+							}
+						} else if (board[pos[1]][pos[0]] == "tiger") {
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							draw_tiger_selection(pos[0], pos[1]);
+						}
+					}
+				}
+			}
+
+			//adding mouseclick UI
+			cui.addEventListener("click", mouseClick, false);
+			function mouseClick(e){
+				var pos = getMousePos(e);
+
+				if (pos!=-1){
+
+					//case where we're adding lambs
+					if (tomove == "placelamb"){
+						if (addLamb (pos[1], pos[0])){
+							updateBoard();
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							tomove = "tiger1";
+						}
+					}
+
+					//case where we're moving lamb
+					if (tomove == "lamb1"){
+						if (board[pos[1]][pos[0]]=="lamb"){
+							selectedLamb = pos;
+							tomove = "lamb2";
+						}
+					} else if (tomove == "lamb2"){
+						if (board[pos[1]][pos[0]]=="lamb"){
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							selectedLamb = pos;
+							draw_lamb_selection(pos[0], pos[1]);
+							tomove = "lamb2";
+						} else if (moveLamb (selectedLamb[1], selectedLamb[0], pos[1], pos[0])){
+							updateBoard();
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							tomove = "tiger1";
+						}
+					}
+
+					//case where we're moving tiger
+					if (tomove == "tiger1"){
+						if (board[pos[1]][pos[0]]=="tiger"){
+							selectedTiger = pos;
+							tomove = "tiger2";
+						}
+					} else if (tomove == "tiger2"){
+						if (board[pos[1]][pos[0]]=="tiger"){
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							selectedTiger = pos;
+							draw_tiger_selection(pos[0], pos[1]);
+							tomove = "tiger2";
+						} else if (moveTiger (selectedTiger[1], selectedTiger[0], pos[1], pos[0])){
+							updateBoard();
+							ctxui.clearRect (0, 0, cui.width, cui.height);
+							if (unplacedLambs > 0){
+								tomove = "placelamb";
+							} else {
+								tomove = "lamb1";
+							}
+						}
+					}
+				}
+			}
+
+			//snapping to coordinate
+			var mouseRadius = 50;
+
+			function getMousePos (e){
+
+				var mousex = e.pageX - cui.offsetLeft - document.getElementById("canvasContainer").offsetLeft;
+				var mousey = e.pageY - cui.offsetTop - document.getElementById("canvasContainer").offsetTop;
+				var boardx = mousex - 330;
+				var boardy = mousey - 100;
+
+				if (boardx<-mouseRadius || boardx>600+mouseRadius || boardy<-mouseRadius || boardy>600+mouseRadius){
+					return -1;
+				}
+				
+				if ((boardx%150<=mouseRadius || boardx%150>=150-mouseRadius) && (boardy%150<=mouseRadius || boardy%150>=150-mouseRadius)){
+					return [Math.round (boardx/150), Math.round(boardy/150)];
+				}
+
+				return -1;
+			}
+
+			//drawing functions
+
+			function draw_ui_lamb (x, y) {
+				ctxui.drawImage (lamb_image, (330+x*150)-65, (100+y*150)-65, 130, 130);
+			}
+
+			function draw_tiger_selection(x,y){
+				ctxui.beginPath();
+				ctxui.arc((335+x*150), (95+y*150), 50, 0, 2 * Math.PI);
+				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
+				ctxui.fill();
+				ctxui.lineWidth = 0.1;
+				ctxui.stroke();
+			}
+
+			function draw_tiger_move_selection(x,y){
+				ctxui.beginPath();
+				ctxui.arc((330+x*150), (100+y*150), 50, 0, 2 * Math.PI);
+				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
+				ctxui.fill();
+				ctxui.lineWidth = 0.1;
+				ctxui.stroke();
+			}
+
+			function draw_lamb_selection(x,y){
+				ctxui.beginPath();
+				ctxui.arc((330+x*150), (100+y*150), 50, 0, 2 * Math.PI);
+				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
+				ctxui.fill();
+				ctxui.lineWidth = 0.1;
+				ctxui.stroke();
+			}
+
+			function draw_lamb_move_selection(x,y){
+				ctxui.beginPath();
+				ctxui.arc((330+x*150), (100+y*150), 50, 0, 2 * Math.PI);
+				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
+				ctxui.fill();
+				ctxui.lineWidth = 0.1;
+				ctxui.stroke();
+			}
+
+			
+
+			/*------------------------------------------------------------------- logic, backend -----------------------------------------------------*/
+
+			var board = []
+			for (var i=0; i<5; i++){
+				board.push([]);
+				for (var j=0; j<5; j++){
+					board[i].push("empty");
+				}
+			}
+			board[0][0]="tiger";
+			board[0][4]="tiger";
+			board[4][0]="tiger";
+			board[4][4]="tiger";
+
+			function moveTiger (fromx, fromy, tox, toy){
+				if (board[fromx][fromy] == "tiger" && board[tox][toy] == "empty"){
+					var dx = Math.abs(fromx - tox);
+					var dy = Math.abs(fromy - toy);
+					if ((dx == 2 && dy == 2 && ((fromx+fromy) % 2) ==0) || (dx == 2 && dy == 0) || (dx == 0 && dy == 2)){
+						if (board[Math.floor((fromx+tox)/2)][Math.floor((fromy+toy)/2)] == "lamb"){
+							board[fromx][fromy] = "empty";
+							board[Math.floor((fromx+tox)/2)][Math.floor((fromy+toy)/2)] = "empty";
+							board[tox][toy] = "tiger";
+							killedLambs++;
+							return true;
+						}
+					}
+					if ((dx==1 && dy==0) || (dx==0 && dy==1) || (dx==1 && dy==1 && ((fromx+fromy) % 2) ==0)){
+						board[fromx][fromy] = "empty";
+						board[tox][toy] = "tiger";
+						return true;
+					}
+				}
+				return false;
+			}
+
+			function addLamb (x, y){
+				if(board[x][y]=="empty" && unplacedLambs > 0){
+					board[x][y]="lamb";
+					unplacedLambs--;
+
+					return true;
+				}
+				return false;
+			}
+
+			function moveLamb (fromx, fromy, tox, toy){
+				if (board[fromx][fromy] == "lamb" && board[tox][toy] == "empty" && unplacedLambs == 0){
+					var dx = Math.abs(fromx - tox);
+					var dy = Math.abs(fromy - toy);
+					if ((dx==1 && dy==0) || (dx==0 && dy==1) || (dx==1 && dy==1 && ((fromx+fromy) % 2) ==0)){
+						board[fromx][fromy] = "empty";
+						board[tox][toy] = "lamb";
+						return true;
+					}
+				}
+				return false;
+			}
+
+			/*------------------------------------------------------random play------------------------------------------------------*/
+			
+			/*
+			var toMove = "tiger";
+			var interval = setInterval(function(){
+
+				if (toMove == "tiger"){
+					while (true){
+						var fromx = Math.floor(Math.random() * 5);
+						var fromy = Math.floor(Math.random() * 5);
+						var tox = Math.floor(Math.random() * 5);
+						var toy = Math.floor(Math.random() * 5);
+						//console.log("Tiger: (" +fromx +", "+fromy+") -> (" + tox +", "+toy+")");
+						if (moveTiger(fromx, fromy, tox, toy)){
+							break;
+						}
+					}
+					toMove = "lamb";
+				} else {
+					if (unplacedLambs == 0){
+						while(true){
+							var fromx = Math.floor(Math.random() * 5);
+							var fromy = Math.floor(Math.random() * 5);
+							var tox = Math.floor(Math.random() * 5);
+							var toy = Math.floor(Math.random() * 5);
+							//console.log("Lamb: (" +fromx +", "+fromy+") -> (" + tox +", "+toy+")");
+							if (moveLamb(fromx, fromy, tox, toy)){
+								break;
+							}
+						}
+					} else {
+						while(true){
+							var x = Math.floor(Math.random() * 5);
+							var y = Math.floor(Math.random() * 5);
+							//console.log ("Lamb: (" +x +", "+y+")");
+							if (addLamb (x,y)){
+								break;
+							}
+						}
+					}
+					toMove = "tiger";
+				}
+				updateBoard();
+				console.log(board);
+
+				if (killedLambs >= 5){
+					clearInterval(interval);
+					//document.getElementById("gameResult").innerHTML="Tigers win";
+				}
+			}, 500);*/
+			
+
+
+		</script>
+
+	</body>
+
+</html>
