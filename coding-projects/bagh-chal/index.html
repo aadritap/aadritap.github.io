@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 	<head>
 	
 		<title> Bagh Chal </title>
@@ -6,6 +6,8 @@
 
 		body{			
 				font-family: 'Brush Script MT', cursive;
+				color:white;
+				padding: 30px;
 		}
 			h1 {
 				font-size: 80px;
@@ -16,6 +18,7 @@
 			
 			#canvasContainer{
 				position: relative;
+				height: 900px;
 			}
 
 			canvas{
@@ -38,15 +41,48 @@
 				pointer-events: none;
 			}
 
-			#rules{
+			#restartbtn{
+				border-radius: 20px;
+				height: 75px;
+				width: 150px;
+				color: white;
+				font-size: 30px;
+				font-family: 'Brush Script MT', cursive;
+				border: 3px solid white;
+				background-color: #784;
+				box-shadow: 0px 5px white;
+			}
+			#restartbtn:hover{
+				background-color:#5f6527;
+				text-color:#dddddd;
+				
+				box-shadow: 0px 5px #dddddd;
+			}
+
+			#back{
 				color: white;
 				font-size: 40px;
+				text-align: left;
 			}
 			a:visited, a:link{
 				color:white
 			}
 			a:hover{
 				color:#dddddd;
+			}
+
+			
+			h2 {
+				font-size: 60px;
+				color: white;
+				margin: 20px 0 20px 0;
+				text-align: left;
+			}
+			
+			.text{
+				text-align: justify;
+				font-size: 30px;
+				font-family: "Garamond";
 			}
 
 		</style>
@@ -56,23 +92,55 @@
 
 		<h1> Bagh-Chal </h1>
 		
-		<!-- <p id="back"> <a href = "../../"> Back To Main Page </a>  </p> -->
-		<p id="rules"> <a href = "rules/"> Rules </a> </p>
-
 		<div id="canvasContainer">
 			<canvas id="myCanvas" width="1260" height="900"> </canvas>
 			<canvas id="canvasBG" width="1260" height="900"> </canvas>
 			<canvas id="canvasUI" width="1260" height="900"> </canvas>
 		</div>
 
+		
+		<button id="restartbtn" onclick="window.location.reload()">Restart</button>
+
+		
+		<div id="back"> <a href = "../../"> Back To Main Page </a>  </div> <br>
+
+		<hr>
+
+		<h2> How to Play </h2>
+		
+		<div class="text">
+			<ol>
+				<li>One player controls the tigers and one player controls the goats. Players alternate turns</li>
+				<li>On their turn, the tiger-player can either move one tiger to an adjacent vertex or capture a goat by jumping over it to an empty vertex</li>
+				<li>On their turn, at first the goat-player can only place a goat on any vertex, and once all twenty goats have been placed, can move one goat to an adjacent vertex</li>
+				<li>The tigers win if they capture five goats. The goats win if they can surround the tigers and leave them with no moves</li>
+				<li>Once all goats have been placed, repetition of the board state is considered a draw</li>
+			</ol>
+						<a href = "https://en.wikipedia.org/wiki/Bagh-chal">Wikipedia Page on Bagh-Chal</a>
+		</div> <br>
+
+		<hr> <br>
+
+		<h2> Game Analysis </h2>
+		<div class="text"> 
+			<p>After playing a few times, it becomes apparent that a dominant strategy for the goats-player is to place goats on the four corner vertices or in pairs on the edges (neither can ever be captured unless they move!) and close-in from the 'outside-in', placing goats in vertices that make them impossible to capture and suffocating the tigers (once all the goats have been placed, there is only one empty vertex left!). The first goat must be placed in the middle vertex of an outer edge, otherwise the tigers can force a capture. Trying not to lose any goats during this stage is crucial and it doesn't seem that there are many positions where sacrificing a goat gives any sort of advantage. It is not clear what the tigers can 'do', but I noticed a nice configuration for the tigers is a tiger-empty-empty-tiger configuration along any line, since this prevents the opponent from placing a goat on either of the two empty vertices between the tigers. During the second phase of the game, once the goats have been placed, it is interesting that 'zugzwang' frequently occurs; that is, being forced to move is a disadvantage.</p>
+			<p> With the above strategy, it seems that it is very easy for the goats to win. This is a very interesting paper: '<a href = "https://web.archive.org/web/20120313050451/http://www.yewjin.com/storage/papers/Computing_Tigers_And_Goats.pdf">Computing Tigers and Goats</a>,' by Lim Yew Jin and J. Nievergelt. Although they were not able to solve the game, the paper more or less echoes the thoughts above, but surprisingly the authors calculated that it is possible for the tigers to force captures of at least three goats, two of them in the first phase of the game!  </p>
+<p> The authors give some interesting statistical analysis and describe how they used co-evolution neural networks to analyse the game. They also pose an interesting question, which is also something I was thinking about: Humans like games for which there are some vague principles they can keep in mind to analyse the game (in chess; taking control of the center, 'knights on the rim are dim', weak squares etc.), rather than a purely calculation based game. However, it is unclear whether there are any such nice principles for the game of Bag-Chal, especially if it turns out that it is the tigers who have a winning strategy. Do none exist, which makes this a purely calculation based game, or have we simply not been able to describe any because there aren't currently any human experts in the game? </p>
+<p>The fact that the tigers can force a capture of three goats is very interesting to me, and I would like to find out how it is possible and give an easily described strategy for the tigers to do so (aside from tackling the obvious problem of solving the game and finding a winning strategy). It also gives hope that maybe forcing a capture of four or five is actually possible? After all, if it is not even possible to capture four goats, and it seems easy on a human level for the goats to evade capture, why was the number five settled on as the win condition by the creators of the game and over time and history? Maybe there was some theory developed for the game but the knowledge has been lost over time. </p>
+		</div>
+
+		<hr>
+
+		<br>
+		<div class = "text"> Small note: This program is technically incomplete, as I haven't added win and draw conditions yet. </div>
+
 		<script>
 
 			/*
 			1. scale down size
-			3. add win conditions
+			3. add draw, win conditions
 			4. make selection in shape of animal (not hard to do, how to make opacity?)
-			5. add replay button
-			6. add click audio, growl audio and bleating sound
+			5. add click audio, growl audio and bleating sound
 			*/
 
 			/* ---------------------------------------------------------------- background canvas -------------------------------------------*/
@@ -205,7 +273,7 @@
 			var cui = document.getElementById ("canvasUI");
 			var ctxui = cui.getContext("2d");
 
-			var tomove = "tiger1";
+			var tomove = "placelamb";
 			var selectedTiger = [0,0];
 			var selectedLamb = [0,0];
 
@@ -447,10 +515,11 @@
 			}
 
 			function write_message(msg){
-				ctxui.font = "50px Brush Script MT";
-				ctxui.fillStyle = "rgb(255 255 255)";
-				var w = ctxui.measureText(msg).width;
-				ctxui.fillText(msg, 630-(w/2), 850);
+				ctx.clearRect (0, 800, 1260, 100);
+				ctx.font = "50px Brush Script MT";
+				ctx.fillStyle = "rgb(255 255 255)";
+				var w = ctx.measureText(msg).width;
+				ctx.fillText(msg, 630-(w/2), 865);
 			}
 		
 			/*------------------------------------------------------------------- logic, backend -----------------------------------------------------*/
@@ -479,8 +548,7 @@
 							killedLambs++;
 
 							
-							write_message("Halum!"); //bad
-							console.log("halum");
+							write_message("হালুম"+"!"); //bad
 							return true;
 						}
 					}
