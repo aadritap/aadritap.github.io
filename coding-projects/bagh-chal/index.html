@@ -3,12 +3,21 @@
 	
 		<title> Bagh Chal </title>
 		<style> 
-			h1 {
+
+		body{			
 				font-family: 'Brush Script MT', cursive;
+		}
+			h1 {
 				font-size: 80px;
 				color: white;
 				margin: 20px 0 20px 0;
 			}
+
+			
+			#canvasContainer{
+				position: relative;
+			}
+
 			canvas{
 				position:absolute;
 				margin: 0;
@@ -17,12 +26,10 @@
 				margin-left:auto;
 				margin-right:auto;
 			}
-			
 			#canvasBG{
 				z-index:1;
 				background-color: #5f6527;
 			}
-			
 			#canvasUI{
 				z-index: 2;
 			}
@@ -31,10 +38,17 @@
 				pointer-events: none;
 			}
 
-			#canvasContainer{
-				position: relative;
-
+			#rules{
+				color: white;
+				font-size: 40px;
 			}
+			a:visited, a:link{
+				color:white
+			}
+			a:hover{
+				color:#dddddd;
+			}
+
 		</style>
 	</head>
 
@@ -42,26 +56,23 @@
 
 		<h1> Bagh-Chal </h1>
 		
-		<p id="gameResult" height = "20px"> </p>
-		
-		<p id="mousepos" height = "20px"> </p>
-		
-		<p id="mousepos2" height = "20px"> </p>
+		<!-- <p id="back"> <a href = "../../"> Back To Main Page </a>  </p> -->
+		<p id="rules"> <a href = "rules/"> Rules </a> </p>
 
 		<div id="canvasContainer">
-			<canvas id="myCanvas" width="1260" height="800"> </canvas>
-			<canvas id="canvasBG" width="1260" height="800"> </canvas>
-			<canvas id="canvasUI" width="1260" height="800"> </canvas>
+			<canvas id="myCanvas" width="1260" height="900"> </canvas>
+			<canvas id="canvasBG" width="1260" height="900"> </canvas>
+			<canvas id="canvasUI" width="1260" height="900"> </canvas>
 		</div>
 
 		<script>
 
 			/*
 			1. scale down size
-			2. add list of rules
 			3. add win conditions
 			4. make selection in shape of animal (not hard to do, how to make opacity?)
 			5. add replay button
+			6. add click audio, growl audio and bleating sound
 			*/
 
 			/* ---------------------------------------------------------------- background canvas -------------------------------------------*/
@@ -165,7 +176,7 @@
 			}
 
 			function draw_tiger (y, x){
-				ctx.drawImage (tiger_image, (330+x*150)-50, (100+y*150)-50, 100, 100);
+				ctx.drawImage (tiger_image, (330+x*150)-60, (100+y*150)-60, 120, 120);
 			}
 
 			function draw_lamb (y, x) {
@@ -194,7 +205,7 @@
 			var cui = document.getElementById ("canvasUI");
 			var ctxui = cui.getContext("2d");
 
-			var tomove = "placelamb";
+			var tomove = "tiger1";
 			var selectedTiger = [0,0];
 			var selectedLamb = [0,0];
 
@@ -214,13 +225,21 @@
 
 				var pos = getMousePos (e);
 
-				if (pos!=-1){
-					//case where we're adding lambs
-					if (tomove == "placelamb") {
-						if (board[pos[1]][pos[0]] == "empty"){
-							draw_ui_lamb(pos[0], pos[1]);
+				//case where we're adding lambs
+				if (tomove == "placelamb") {
+					var mousex = e.pageX - cui.offsetLeft - document.getElementById("canvasContainer").offsetLeft;
+					var mousey = e.pageY - cui.offsetTop - document.getElementById("canvasContainer").offsetTop;
+					
+					if (pos!=-1 && board[pos[1]][pos[0]]=="empty") {
+						draw_ui_lamb(330+(pos[0]*150), 100+(pos[1]*150));
+					} else {
+						if (mousex>=230 && mousex <= 1030 && mousey >= 19 && mousey<=790){
+							draw_ui_lamb(mousex, mousey);
 						}
 					}
+				}
+
+				if (pos!=-1){
 
 					//case where we're in part 1 of moving lamb
 					if (tomove == "lamb1"){
@@ -298,6 +317,9 @@
 							updateBoard();
 							ctxui.clearRect (0, 0, cui.width, cui.height);
 							tomove = "tiger1";
+							cui.style.zIndex = "2";
+							
+							write_message("");
 						}
 					}
 
@@ -306,6 +328,8 @@
 						if (board[pos[1]][pos[0]]=="lamb"){
 							selectedLamb = pos;
 							tomove = "lamb2";
+
+							write_message("");
 						}
 					} else if (tomove == "lamb2"){
 						if (board[pos[1]][pos[0]]=="lamb"){
@@ -313,10 +337,15 @@
 							selectedLamb = pos;
 							draw_lamb_selection(pos[0], pos[1]);
 							tomove = "lamb2";
+
+							write_message("");
+
 						} else if (moveLamb (selectedLamb[1], selectedLamb[0], pos[1], pos[0])){
 							updateBoard();
 							ctxui.clearRect (0, 0, cui.width, cui.height);
 							tomove = "tiger1";
+						
+							write_message("");
 						}
 					}
 
@@ -325,28 +354,37 @@
 						if (board[pos[1]][pos[0]]=="tiger"){
 							selectedTiger = pos;
 							tomove = "tiger2";
+						
+							write_message("");
 						}
 					} else if (tomove == "tiger2"){
 						if (board[pos[1]][pos[0]]=="tiger"){
+							
 							ctxui.clearRect (0, 0, cui.width, cui.height);
 							selectedTiger = pos;
 							draw_tiger_selection(pos[0], pos[1]);
 							tomove = "tiger2";
+
+							
+							write_message("");
+
 						} else if (moveTiger (selectedTiger[1], selectedTiger[0], pos[1], pos[0])){
 							updateBoard();
 							ctxui.clearRect (0, 0, cui.width, cui.height);
 							if (unplacedLambs > 0){
 								tomove = "placelamb";
+								cui.style.zIndex = "4";
 							} else {
 								tomove = "lamb1";
 							}
+							//writing halum message in other function
 						}
 					}
 				}
 			}
 
 			//snapping to coordinate
-			var mouseRadius = 50;
+			var mouseRadius = 25;
 
 			function getMousePos (e){
 
@@ -369,22 +407,22 @@
 			//drawing functions
 
 			function draw_ui_lamb (x, y) {
-				ctxui.drawImage (lamb_image, (330+x*150)-65, (100+y*150)-65, 130, 130);
+				ctxui.drawImage (lamb_image, x-65, y-65, 130, 130);
 			}
 
 			function draw_tiger_selection(x,y){
 				ctxui.beginPath();
-				ctxui.arc((335+x*150), (95+y*150), 50, 0, 2 * Math.PI);
-				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
+				ctxui.arc((330+x*150), (100+y*150), 55, 0, 2 * Math.PI);
+				ctxui.fillStyle = "rgb(95 101 39 / 50%)";
 				ctxui.fill();
 				ctxui.lineWidth = 0.1;
-				ctxui.stroke();
+				ctxui.stroke()
 			}
 
 			function draw_tiger_move_selection(x,y){
 				ctxui.beginPath();
-				ctxui.arc((330+x*150), (100+y*150), 50, 0, 2 * Math.PI);
-				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
+				ctxui.arc((330+x*150), (100+y*150), 35, 0, 2 * Math.PI);
+				ctxui.fillStyle = "rgb(95 101 39 / 50%)";
 				ctxui.fill();
 				ctxui.lineWidth = 0.1;
 				ctxui.stroke();
@@ -401,15 +439,20 @@
 
 			function draw_lamb_move_selection(x,y){
 				ctxui.beginPath();
-				ctxui.arc((330+x*150), (100+y*150), 50, 0, 2 * Math.PI);
+				ctxui.arc((330+x*150), (100+y*150), 35, 0, 2 * Math.PI);
 				ctxui.fillStyle = "rgb(150 150 150 / 50%)";
 				ctxui.fill();
 				ctxui.lineWidth = 0.1;
 				ctxui.stroke();
 			}
 
-			
-
+			function write_message(msg){
+				ctxui.font = "50px Brush Script MT";
+				ctxui.fillStyle = "rgb(255 255 255)";
+				var w = ctxui.measureText(msg).width;
+				ctxui.fillText(msg, 630-(w/2), 850);
+			}
+		
 			/*------------------------------------------------------------------- logic, backend -----------------------------------------------------*/
 
 			var board = []
@@ -434,6 +477,10 @@
 							board[Math.floor((fromx+tox)/2)][Math.floor((fromy+toy)/2)] = "empty";
 							board[tox][toy] = "tiger";
 							killedLambs++;
+
+							
+							write_message("Halum!"); //bad
+							console.log("halum");
 							return true;
 						}
 					}
@@ -455,6 +502,7 @@
 				}
 				return false;
 			}
+			
 
 			function moveLamb (fromx, fromy, tox, toy){
 				if (board[fromx][fromy] == "lamb" && board[tox][toy] == "empty" && unplacedLambs == 0){
@@ -520,8 +568,6 @@
 				}
 			}, 500);*/
 			
-
-
 		</script>
 
 	</body>
