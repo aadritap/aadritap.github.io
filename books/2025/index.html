@@ -6,7 +6,6 @@
 	<style>
 		body {
 			text-align: justify;
-			font-size: 1.3vw;
 			font-family: "Georgia";
 			background-color: #FFFCE0;
 		}
@@ -16,19 +15,31 @@
 			padding-left: 30px;
 			padding-right: 30px;
 			padding-bottom: 30px;
-			margin: 30px;
+			margin: 20px;
 		}
-		#disclaimer{
-			font-size:1vw;
+		h1{
+			text-align: center;
 		}
 
 		@media only screen and (max-width: 1000px) {
 			img {
-				width: 300px;
+				width: 250px;
+			}
+			body {
+				font-size: 12px;
+			}
+			#disclaimer {
+				font-size: 8px;
 			}
 		}
 
 		@media only screen and (min-width: 1001px){
+			body {
+				font-size: 20px;
+			}
+			#disclaimer {
+				font-size: 15px;
+			}
 			img {
 				width:150px;
 			}
@@ -39,16 +50,13 @@
 			float:left;
 			margin-right: 20px;
 		}
-
-		h1{
-			text-align: center;
+		
+		.clearfix::after {
+			content: "";
+			clear: both;
+			display: table;
 		}
 
-		.clearfix::after {
-  content: "";
-  clear: both;
-  display: table;
-}
 	</style>
 </head>
 <body> <div id="body-container">
