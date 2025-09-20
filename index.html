@@ -31,16 +31,33 @@ blue: #84beaa
 				font-family: "Fredericka the Great", serif;
 				font-weight: 500;
 			}
-			h1, h2{
+			h1, h2, .box{
 				font-family:"Fredericka the Great", "Garamond", serif;
 				font-weight: 500;
 			}
 
 			a:link, a:visited{
-				color:#3e362e;
+				color:#405d27;
 			}
 			a:hover{
 				color:#82b74b;
+			}
+
+			.box{
+				border: dashed black 1px;
+				border-radius: 15px;
+				
+				height: 110px;
+				width: 220px;
+				margin: 10px;
+				line-height:60px; /*attempt at vertical centering*/
+				
+				text-align:center;
+
+				display: inline-block;
+			}
+			.boxes-container{
+				text-align:center;
 			}
 		</style>
 	</head>
@@ -49,11 +66,24 @@ blue: #84beaa
 		
 		<h1 id="title"> Aadrita.space </h1>
 
+		<hr>
+		
+		<br> Hello! I am a student of Mathematics at Chennai Mathematical Institute. You can find my CMI profile <a href ="https://www.cmi.ac.in/people/student-profile.php?id=aadritap.ug2023">here</a> (and play my Sporcle quizzes <a href ="https://www.sporcle.com/user/aadritaxx/quizzes/">here</a>).
+
+		<br><br>
+
+		<div class="boxes-container">
+		<div class="box"> <h2> Books </h2> </div> 
+		<div class="box"> <h2> Birds </h2> </div> 
+		<div class="box"> <h2> Languages </h2> </div> 
+		<div class="box"> <h2> Five Minutes </h2> </div>
+		<div class="box"> <h2> Geography </h2> </div>
+		<div class="box"> <h2> Coding Projects </h2> </div>
+		</div>
+
 		<div>
 
 		<br>
-		
-		You can play my Sporcle quizzes <a href ="https://www.sporcle.com/user/aadritaxx/quizzes/">here</a> and find my CMI profile <a href ="https://www.cmi.ac.in/people/student-profile.php?id=aadritap.ug2023">here</a>
 
 		<hr>
 
