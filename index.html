@@ -65,11 +65,29 @@ blue: #84beaa
 				text-align:center;
 				position:sticky;
 				top:0;
+					z-index:1;
+			
 			}
 
-			.footer{
-				color:red;
+			#footer{
+			overflow:hidden;
 			}
+			#x{
+				  width: fit-content;
+				  height: fit-content;
+				  position: relative;
+				  animation-name: myAnimation;
+				  animation-duration: 4s;
+				  animation-timing-function:linear;
+				  animation-iteration-count: infinite;
+				  z-index:0;
+			}
+
+			@keyframes myAnimation {
+			  0%   {left:-100%;}
+			  100%  {left:100%;}
+			}
+
 		</style>
 	</head>
 
@@ -100,7 +118,7 @@ blue: #84beaa
 		<div>
 
 		<hr>
-		<div style="text-align:center; font-size: 50px;" id="footer"> <a href="https://www.aadrita.space/academics/">MY ACADEMIC PAGE!</a> </div>
+		<div style="text-align:center; font-size: 50px;" id="footer"> <div id="x"> <a href="https://www.aadrita.space/academics/">MY ACADEMIC PAGE!</a> </div></div>
 		
 		<hr>
 
