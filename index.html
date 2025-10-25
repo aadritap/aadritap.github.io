@@ -77,16 +77,28 @@ blue: #84beaa
 				  height: fit-content;
 				  position: relative;
 				  animation-name: myAnimation;
-				  animation-duration: 4s;
+				  animation-duration: 8s;
 				  animation-timing-function:linear;
 				  animation-iteration-count: infinite;
 				  z-index:0;
 			}
 
 			@keyframes myAnimation {
-			  0%   {left:-100%;}
-			  100%  {left:100%;}
-			}
+				0%{
+					transform: translateX(0%);
+					left: 0%;
+				  }
+				  50% {
+					transform: translateX(-100%);
+					left: 100%;
+				  }
+				  
+				  100% {
+					transform: translateX(0%);
+					left: 0%;
+				  }
+				}
+
 
 		</style>
 	</head>
@@ -95,7 +107,7 @@ blue: #84beaa
 		
 		<h1 id="title"> Aadrita.space </h1> <hr>
 
-		<br> Hello! I am a student of Mathematics at Chennai Mathematical Institute. You can find my CMI profile <a href ="https://www.cmi.ac.in/people/student-profile.php?id=aadritap.ug2023">here</a> (and play my Sporcle quizzes <a href ="https://www.sporcle.com/user/aadritaxx/quizzes/">here</a>). You can view (a very incorrect, outdated) sitemap for my website <a href="https://web.archive.org/web/sitemap/aadrita.space">here</a>.
+		<br> Hello! I am a student of Mathematics at Chennai Mathematical Institute. You can find my CMI profile <a href ="https://www.cmi.ac.in/people/student-profile.php?id=aadritap.ug2023">here</a> (and play my Sporcle quizzes <a href ="https://www.sporcle.com/user/aadritaxx/quizzes/">here</a>). You can view (a very incorrect, outdated) sitemap for my website <a href="https://web.archive.org/web/sitemap/aadrita.space">here</a>. My website is pretty new, so most of the pages are unifinished and/or not quite how I would like them to be yet.
 
 		<br><br>
 
